@@ -16,4 +16,11 @@ class EditDispositivo extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['ultima_sincronizacion'] = now();
+        return $data;
+    }
+
 }

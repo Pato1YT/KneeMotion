@@ -17,7 +17,7 @@ class UsuarioResource extends Resource
 {
     protected static ?string $model = Usuario::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationIcon = 'heroicon-s-users';
 
     protected static ?string $navigationGroup = 'Usuarios';
 

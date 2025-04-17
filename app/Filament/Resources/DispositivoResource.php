@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\DispositivoResource\Pages;
 use App\Filament\Resources\DispositivoResource\RelationManagers;
 use App\Models\Dispositivo;
+use App\Models\Paciente;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,7 +18,7 @@ class DispositivoResource extends Resource
 {
     protected static ?string $model = Dispositivo::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-heart';
+    protected static ?string $navigationIcon = 'heroicon-s-server';
 
     protected static ?string $navigationGroup = 'Dispositivos';
 
@@ -28,6 +29,31 @@ class DispositivoResource extends Resource
         return $form
             ->schema([
                 //
+                Forms\Components\TextInput::make('numero_serie')
+                ->label('Número de Serie')
+                ->required()
+                ->numeric(),
+                Forms\Components\TextInput::make('modelo')
+                ->maxLength(100),
+                Forms\Components\TextInput::make('version_firmware')
+                ->label('Versión de Firmware')
+                ->maxLength(100),
+                Forms\Components\Select::make('estado')
+                ->required()
+                ->options([
+                    'activo' => 'Activo',
+                    'mantenimiento' => 'Mantenimiento',
+                    'inactivo' => 'Inactivo'
+                ]),
+                Forms\Components\Select::make('idPaciente')
+                ->label('Paciente')
+                ->options(Paciente::all()->pluck('nombre', 'idPaciente')),
+                // Forms\Components\DatePicker::make('ultima_sincronizacion')
+                // ->label('Ultima sincronización')
+                // ->required()
+                // ->native(false)
+                // ->closeOnDateSelection()
+                // ->maxDate(now()),
             ]);
     }
 
@@ -36,12 +62,52 @@ class DispositivoResource extends Resource
         return $table
             ->columns([
                 //
+                Tables\Columns\TextColumn::make('numero_serie')
+                ->label('Número de Serie')
+                ->sortable()
+                ->searchable()
+                ->wrap(),
+                Tables\Columns\TextColumn::make('modelo')
+                ->sortable()
+                ->searchable()
+                ->wrap(),
+                Tables\Columns\TextColumn::make('version_firmware')
+                ->sortable()
+                ->searchable()
+                ->wrap(),
+                Tables\Columns\TextColumn::make('idPaciente')
+                ->label('Paciente')
+                ->formatStateUsing(fn ($state) => \App\Models\Paciente::find($state)?->nombre)
+                ->sortable()
+                ->searchable()
+                ->wrap()
+                ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('ultima_sincronizacion')
+                ->dateTime()
+                ->sortable()
+                ->searchable()
+                ->toggleable(isToggledHiddenByDefault: true)->label('Ultima sincronización')
+                ->wrap(),
+                Tables\Columns\TextColumn::make('created_at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true)->label('Creado')
+                ->wrap(),
+                Tables\Columns\TextColumn::make('updated_at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true)->label('Actualizado')
+                ->wrap(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                ->action(fn (Dispositivo $record) => $record->delete())
+                ->requiresConfirmation()
+                ->modalIcon('heroicon-o-trash'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
