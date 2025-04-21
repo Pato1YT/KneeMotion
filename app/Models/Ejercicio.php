@@ -14,7 +14,7 @@ class Ejercicio extends Model
     protected $primaryKey = 'idEjercicio';
 
     protected $fillable = [
-        'nombre', 'descripcion', 'duracion_predeterminada', 'intensidad_predeterminada'
+        'nombre', 'descripcion', 'duracion_predeterminada', 'intensidad_predeterminada', 'aplica_fes'
     ];
 
     public function ejerciciosSesion()

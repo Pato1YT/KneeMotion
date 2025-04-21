@@ -80,6 +80,7 @@ return new class extends Migration
             $table->text('descripcion')->nullable();
             $table->integer('duracion_predeterminada')->nullable();
             $table->integer('intensidad_predeterminada')->nullable();
+            $table->boolean('aplica_fes')->default(false);
             $table->timestamps();
         });
 

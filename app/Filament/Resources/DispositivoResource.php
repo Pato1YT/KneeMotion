@@ -31,8 +31,7 @@ class DispositivoResource extends Resource
                 //
                 Forms\Components\TextInput::make('numero_serie')
                 ->label('Número de Serie')
-                ->required()
-                ->numeric(),
+                ->required(),
                 Forms\Components\TextInput::make('modelo')
                 ->maxLength(100),
                 Forms\Components\TextInput::make('version_firmware')

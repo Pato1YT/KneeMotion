@@ -68,12 +68,12 @@ class MetricaSesionResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return 'Métrica de Sesión';
+        return 'Lecturas de Dispositivos';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return 'Métricas de Sesiones';
+        return 'Lecturas de Dispositivos';
     }
 
     public static function getNavigationBadge(): ?string

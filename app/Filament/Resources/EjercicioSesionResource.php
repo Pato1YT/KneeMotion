@@ -68,12 +68,12 @@ class EjercicioSesionResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return 'Ejercicio de Sesión';
+        return 'Ejercicios Realizados';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return 'Ejercicios de Sesiones';
+        return 'Ejercicios Realizados';
     }
 
     public static function getNavigationBadge(): ?string

@@ -28,6 +28,31 @@ class EjercicioResource extends Resource
         return $form
             ->schema([
                 //
+                Forms\Components\TextInput::make('nombre')
+                ->label('Nombre del ejercicio')
+                ->required()
+                ->maxLength(100),
+                Forms\Components\Textarea::make('descripcion')
+                ->label('Descripción')
+                ->rows(4)
+                ->maxLength(500)
+                ->placeholder('Describe los rangos de movimiento, fases, recomendaciones, etc.')
+                ->columnSpanFull(),
+                Forms\Components\TextInput::make('duracion_predeterminada')
+                ->label('Duración (minutos)')
+                ->type('number')
+                ->minValue(1)
+                ->maxValue(120)
+                ->required(),
+                Forms\Components\TextInput::make('intensidad_predeterminada')
+                ->label('Intensidad (%)')
+                ->type('number')
+                ->minValue(0)
+                ->maxValue(100)
+                ->required(),
+                Forms\Components\Toggle::make('aplica_fes')
+                ->label('¿Incluye estimulación eléctrica funcional (FES)?')
+                ->inline(),
             ]);
     }
 
@@ -36,12 +61,40 @@ class EjercicioResource extends Resource
         return $table
             ->columns([
                 //
+                Tables\Columns\TextColumn::make('nombre')
+                ->label('Ejercicio')
+                ->searchable()
+                ->sortable(),
+                Tables\Columns\TextColumn::make('duracion_predeterminada')
+                ->label('Duración')
+                ->suffix(' min')
+                ->sortable(),
+                Tables\Columns\TextColumn::make('intensidad_predeterminada')
+                ->label('Intensidad')
+                ->suffix('%')
+                ->sortable(),
+                Tables\Columns\IconColumn::make('aplica_fes')
+                ->label('FES')
+                ->boolean(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)->label('Creado'),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)->label('Actualizado'),
             ])
+                ->defaultSort('nombre')
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                ->action(fn (Ejercicio $record) => $record->delete())
+                ->requiresConfirmation()
+                ->modalIcon('heroicon-o-trash'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -29,7 +29,8 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Violet,
+                //'primary' => Color::Violet,
+                'primary' => '#00bfa5'
             ])
 
             ->favicon('images/logo-kneeMotion.png')
