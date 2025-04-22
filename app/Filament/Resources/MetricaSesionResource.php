@@ -36,12 +36,50 @@ class MetricaSesionResource extends Resource
         return $table
             ->columns([
                 //
+                Tables\Columns\TextColumn::make('sesion.paciente.nombre')
+                ->label('Paciente')
+                ->searchable()
+                ->sortable()
+                ->toggleable(),
+                Tables\Columns\TextColumn::make('sesion.inicio')
+                ->label('Inicio de Sesión')
+                ->dateTime('d/m/Y H:i')
+                ->sortable()
+                ->toggleable(),
+                Tables\Columns\TextColumn::make('sesion.paciente.usuario.nombre')
+                ->label('Fisioterapeuta')
+                ->toggleable(),
+                Tables\Columns\TextColumn::make('idSesion')
+                ->label('Sesión')
+                ->searchable()
+                ->sortable(),
+                Tables\Columns\TextColumn::make('momento')
+                ->label('Momento')
+                ->dateTime('d/m/Y H:i:s')
+                ->sortable(),
+                Tables\Columns\TextColumn::make('angulo')
+                ->label('Ángulo (°)')
+                ->sortable(),
+                Tables\Columns\TextColumn::make('fuerza')
+                ->label('Fuerza')
+                ->sortable(),
+                Tables\Columns\TextColumn::make('temperatura')
+                ->label('Temperatura (°C)')
+                ->sortable(),
+                Tables\Columns\TextColumn::make('intensidad_fes')
+                ->label('FES (%)')
+                ->sortable(),
             ])
+            ->defaultSort('momento', 'desc')
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                ->action(fn (MetricaSesion $record) => $record->delete())
+                ->requiresConfirmation()
+                ->modalIcon('heroicon-o-trash'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

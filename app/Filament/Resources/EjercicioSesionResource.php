@@ -28,6 +28,25 @@ class EjercicioSesionResource extends Resource
         return $form
             ->schema([
                 //
+                Forms\Components\Select::make('idSesion')
+                ->label('Sesión')
+                ->relationship('sesion', 'idSesion') // relación si está definida
+                ->required(),
+                Forms\Components\Select::make('idEjercicio')
+                ->label('Ejercicio aplicado')
+                ->relationship('ejercicio', 'nombre') // usa el nombre del ejercicio
+                ->required(),
+                Forms\Components\TextInput::make('duracion')
+                ->label('Duración aplicada (min)')
+                ->numeric()
+                ->minValue(1)
+                ->required(),
+                Forms\Components\TextInput::make('intensidad')
+                ->label('Intensidad aplicada (%)')
+                ->numeric()
+                ->minValue(0)
+                ->maxValue(100)
+                ->required(),
             ]);
     }
 
@@ -36,12 +55,31 @@ class EjercicioSesionResource extends Resource
         return $table
             ->columns([
                 //
+                Tables\Columns\TextColumn::make('sesion.idSesion')
+                ->label('Sesión')
+                ->sortable(),
+                Tables\Columns\TextColumn::make('ejercicio.nombre')
+                ->label('Ejercicio')
+                ->sortable()
+                ->searchable(),
+                Tables\Columns\TextColumn::make('duracion')
+                ->label('Duración (min)')
+                ->sortable(),
+                Tables\Columns\TextColumn::make('intensidad')
+                ->label('Intensidad (%)')
+                ->sortable(),
             ])
+            ->defaultSort('idSesion', 'desc')
+            
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                ->action(fn (EjercicioSesion $record) => $record->delete())
+                ->requiresConfirmation()
+                ->modalIcon('heroicon-o-trash'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
