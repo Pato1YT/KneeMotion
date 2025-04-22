@@ -85,6 +85,16 @@ class MetricaSesionResource extends Resource
         ];
     }
 
+    public static function getModelLabel(): string
+    {
+        return 'Métrica de Sesión';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Métricas de Sesiones';
+    }
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
