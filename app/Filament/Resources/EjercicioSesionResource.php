@@ -75,6 +75,7 @@ class EjercicioSesionResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
                 ->action(fn (EjercicioSesion $record) => $record->delete())

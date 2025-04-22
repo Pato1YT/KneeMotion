@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\SesionResource\Widgets\GraficaAnguloSesion;
 
 class SesionResource extends Resource
 {
@@ -117,6 +118,7 @@ class SesionResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
                 ->action(fn (Sesion $record) => $record->delete())
@@ -134,8 +136,17 @@ class SesionResource extends Resource
     {
         return [
             //
+            \App\Filament\Resources\SesionResource\RelationManagers\EjerciciosSesionRelationManager::class,
+            \App\Filament\Resources\SesionResource\RelationManagers\MetricasSesionRelationManager::class,
         ];
     }
+
+    // public static function getWidgets(): array
+    // {
+    // return [
+    //     GraficaAnguloSesion::class,
+    //     ];
+    // }
 
     public static function getPages(): array
     {
